@@ -28,6 +28,7 @@ Another alternative tolls for infrastructure as a code:
 - Chef
 
 Example of Terraform code to provision Static IP Address
+
 Azure:
 ```
 resource "azurerm_public_ip" "my_static_ip_address" {
