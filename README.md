@@ -63,6 +63,45 @@ Key advantages using Terraform for infrastructure as code:
 - Enhance ***collaboration*** between DevOps teams
 
 ## Setup
+Download the ***Terraform*** from [terraform.io](https://developer.hashicorp.com/terraform/downloads)
+
+**For Windows:**
+- Download the `.exe` file.
+- Create the folder path as `C:\Terraform`
+- Copy the `.exe` file to new path
+- Open `System Environment Variables`
+- Click on `Environment Variables`
+- Choose `Path` and click on `Edit`
+- Click on `New`
+- Paste the path `C:\Terraform`
+- To check, open any terminal and enter `terraform --version`
+
+> You might also want to install `Terraform` extension to your IDE.
+
+Before we begin, we need to create a IAM user and give administrator permissions and generate secret key and access key for our Terraform:
+- Login AWS Console (if you have multiple accounts, use `root` account)
+- Click on `IAM`, then `Users` under IAM resouces
+- Add user
+- Give a name and check the box with `Programmatic access`
+- Continue with `Permissions`
+- Choose `Attach existing policies directly` and check the `AdministratorAccess`
+- Continue to tags and you can leave it as it is
+- Continue to Review and then create the user
+- Save the ***access key ID*** and ***secret access key*** or download the ***.csv*** file
+- For ***Windows***, open `PowerShell`
+  - Enter the commands below:
+    - `$env:AWS_ACCESS_KEY_ID="<accessKeyID>"`
+    - `$env:AWS_SECRET_ACCESS_KEY="<secretAccessKey>"`
+    - `$env:AWS_DEFAULT_REGION="<region>"`
+- For ***Linux***/***MacOS***, open `terminal`
+  - Enter the commands below:
+    - `export AWS_ACCESS_KEY_ID="<accessKeyID>"`
+    - `export AWS_SECRET_ACCESS_KEY="<secretAccessKey>"`
+    - `export AWS_DEFAULT_REGION="<region>"`
+
+> The ***EXPORT*** command will be lost once you close the terminal.
+
+> The `region` might be `us-west-2` or `eu-central-1` or any region on AWS, whatever you like.
 
 ## Basics
 
