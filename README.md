@@ -78,7 +78,7 @@ Download the ***Terraform*** from [terraform.io](https://developer.hashicorp.com
 
 > You might also want to install `Terraform` extension to your IDE.
 
-Before we begin, we need to create a IAM user and give administrator permissions and generate secret key and access key for our Terraform:
+Before we begin, we need to create a ***IAM*** user and give administrator permissions and generate secret key and access key for our Terraform:
 - Login AWS Console (if you have multiple accounts, use `root` account)
 - Click on `IAM`, then `Users` under IAM resouces
 - Add user
@@ -101,7 +101,7 @@ Before we begin, we need to create a IAM user and give administrator permissions
 
 > The ***EXPORT*** command will be lost once you close the terminal.
 
-> The `region` might be `us-west-2` or `eu-central-1` or any region on AWS, whatever you like.
+> The ***region*** might be `us-west-2` or `eu-central-1` or any region on AWS, whatever you like.
 
 ## Basics
 
