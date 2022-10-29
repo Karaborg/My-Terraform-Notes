@@ -15,11 +15,11 @@ Works with:
 - You can create support for your own platform yourself
 
 About Terraform:
-- Syntax of code is HashiCorp Configuration Language (HCL)
+- Syntax of code is **HashiCorp Configuration Language (HCL)**
 - Regular text files with extension `.tf` and `.tfvars`
 - Use any text editor
 - No need to compile code
-- Works on: Windows, Linux, MacOS, OpenBSD, Solaris
+- Works on: **Windows**, **Linux**, **MacOS**, **OpenBSD**, **Solaris**
 
 Another alternative tolls for infrastructure as a code:
 - AWS CloudFormation
@@ -29,7 +29,7 @@ Another alternative tolls for infrastructure as a code:
 
 Example of Terraform code to provision Static IP Address
 
-Azure:
+**Azure:**
 ```
 resource "azurerm_public_ip" "my_static_ip_address" {
     name                        = "ip-for-my-web-page"
@@ -39,14 +39,14 @@ resource "azurerm_public_ip" "my_static_ip_address" {
 }
 ```
 
-AWS:
+**AWS:**
 ```
 resource "aws_eip" "my_static_ip_address" {
     vpc                         = true
 }
 ```
 
-GCP:
+**GCP:**
 ```
 resource "google_compute_address" "my_static_ip_address" {
     name                        = "ip-for-my-web-page"
