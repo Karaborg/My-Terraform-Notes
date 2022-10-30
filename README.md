@@ -104,6 +104,90 @@ Before we begin, we need to create a ***IAM*** user and give administrator permi
 > The ***region*** might be `us-west-2` or `eu-central-1` or any other region on AWS, whatever you like.
 
 ## Basics
+Let's begin with our first example:
+- Create a folder named `Lab-1`
+- Create our first Terraform file under our folder, named `main.tf`
+- The first thing we do is add `provider` and if you installed Terraform extension, it will automaticly put the brackets for you
+- We also need `resource`. You can also find what is necessary in the [terraform document](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance)
+- We need our `ami` and `instance_type`
+  - To find ***AMI*** (Amazon Machine Image), go to ***AWS Console***
+  - Go to ***EC2*** and then ***Instances*** then ***Launch Instances***
+  - You can now see the list of ***AMI*** and can copy the one you would like to use
+    - We choosed `Ubuntu Server 20.04 LTS (HVM), SSD Volume Type - ami-06e54d05255faf8f6`
+- We then, give a ***name*** and ***owner*** inside of our `tags`
+
+So, our first example should look like this:
+```
+provider "aws" {
+  region      = "eu-central-1"
+  #access_key = "<AWS_ACCESS_KEY_ID>"        !NOT RECOMMENDED
+  #secret_key = "<AWS_SECRET_ACCESS_KEY>"    !NOT RECOMMENDED
+}
+
+# COPPIED FROM TERRAFORM DOC AND EDITED
+resource "aws_instance" "my_ubuntu" {
+  ami           = "ami-06e54d05255faf8f6"
+  instance_type = "t3.micro"
+
+  tags = {
+    Name  = "My-Ubuntu-Server"
+    Owner = "Karaborg"
+  }
+}
+```
+
+After that, open a terminal and go to the path where your `.tf` file is located. Then, we need to execute the first Terreform command, which is `terraform init`. Which will read all the `.tf` files under that path and check and download which providers are in use.
+
+> If you are pushing your project on `GitHub`, you might want to create a `.gitignore` file and add the downloaded terraform files there.
+
+Moreover, to start creating resources, we need to type `terraform plan`. Which will check our files and show you what it is going to create but, **it will not create anything yet**.
+
+The next command is `terraform apply`. This will basically show you the exact same thing with the planning but this time, it will ask you if you want to execute. 
+
+If you enter ***yes***, terraform will create the instance based on your file. 
+
+> Using `terraform apply` command twice will not create another instance. Terraform will check your files if it is the same instance.
+
+You can also add another ***resource*** to your `main.tf` file as shown below:
+```
+provider "aws" {
+  region = "eu-central-1"
+  #access_key = "<AWS_ACCESS_KEY_ID>"        !NOT RECOMMENDED
+  #secret_key = "<AWS_SECRET_ACCESS_KEY>"    !NOT RECOMMENDED
+}
+
+# COPPIED FROM TERRAFORM DOC AND EDITED
+resource "aws_instance" "my_ubuntu" {
+  ami           = "ami-06e54d05255faf8f6"
+  instance_type = "t3.micro"
+
+  tags = {
+    Name  = "My-Ubuntu-Server"
+    Owner = "Karaborg"
+  }
+}
+
+# SECOND RESOURCE
+resource "aws_instance" "my_amazon" {
+  ami           = "ami-0528a5175983e7f28"
+  instance_type = "t3.micro"
+
+  tags = {
+    Name  = "My-Amazon-Server"
+    Owner = "Karaborg"
+  }
+}
+```
+
+After that, you can type `terraform plan` and then `terraform apply`. And that will create the non-existing instance for you and will not touch the already-existing instance if there are no changes for that.
+
+### Update Resources
+You can make any updates/changes on your `.tf` file. To apply those updates/changes, you will need to enter `terraform plan` and then `terraform apply` again. Those 2 commands will always check your file and will tell you if it's going to ***add***, ***update*** or ***delete*** something.
+
+### Destroy Resources
+To destroy any resources, you can open the `.tf` file and delete the resource you want, maybe comment it out. Then again, you will need to enter `terraform plan` and then `terraform apply`.
+
+> If you want to destroy ***everything***, you can use the command `terraform destroy`. Which will destroy everything inside of your `.tf` file.
 
 ## Provisioning of Web Server
 
