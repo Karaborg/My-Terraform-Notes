@@ -120,8 +120,8 @@ So, our first example should look like this:
 ```
 provider "aws" {
   region      = "eu-central-1"
-  #access_key = "<AWS_ACCESS_KEY_ID>"        !NOT RECOMMENDED
-  #secret_key = "<AWS_SECRET_ACCESS_KEY>"    !NOT RECOMMENDED
+  #access_key = "<AWS_ACCESS_KEY_ID>"        !POSSIBLE BUT NOT RECOMMENDED
+  #secret_key = "<AWS_SECRET_ACCESS_KEY>"    !POSSIBLE BUT NOT RECOMMENDED
 }
 
 # COPPIED FROM TERRAFORM DOC AND EDITED
