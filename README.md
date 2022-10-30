@@ -101,7 +101,7 @@ Before we begin, we need to create a ***IAM*** user and give administrator permi
 
 > The ***EXPORT*** command will be lost once you close the terminal.
 
-> The ***region*** might be `us-west-2` or `eu-central-1` or any region on AWS, whatever you like.
+> The ***region*** might be `us-west-2` or `eu-central-1` or any other region on AWS, whatever you like.
 
 ## Basics
 
