@@ -190,6 +190,8 @@ To destroy any resources, you can open the `.tf` file and delete the resource yo
 > If you want to destroy ***everything***, you can use the command `terraform destroy`. Which will destroy everything inside of your `.tf` file.
 
 ## Provisioning of Web Server
+
+### Bootstrap simple WebServer on AWS
 Let's us create a simple Web Server:
 ```
 # Build WebServer during Bootstrap
