@@ -190,6 +190,69 @@ To destroy any resources, you can open the `.tf` file and delete the resource yo
 > If you want to destroy ***everything***, you can use the command `terraform destroy`. Which will destroy everything inside of your `.tf` file.
 
 ## Provisioning of Web Server
+Let's us create a simple Web Server:
+```
+# Build WebServer during Bootstrap
+provider "aws" {
+  region = "ca-central-1"
+}
+
+resource "aws_instance" "web" {                                                                         # our aws instance
+  ami = "ami-0c9bfc21ac5bf10eb"                                                                         # Amazon Linux 2
+  instance_type = "t3.micro"
+  #user_data = "yum install httpd -y"                                                                   # this works too
+  vpc_security_group_ids = [ aws_security_group.web.id ]                                                # to make our instance to use our security group
+  user_data = <<EOF
+#!/bin/bash
+yum -y update
+yum -y install httpd
+MYIP=`curl http://169.254.169.254/latest/meta-data/local-ipv4`
+echo "<h2>WebServer with PrivateIP: $MYIP</h2><br>Build by Terraform" > /var/wwww/html/index.html
+service httpd start
+chkconfig httpd on
+EOF
+  tags = {
+    Name = "WebServer Build by Terraform"
+    Owner = "Karaborg"
+  }
+}
+
+resource "aws_security_group" "web" {
+  name = "WebServer-SG"
+  description = "Security Group for my WebServer"                                                       # OPTIONAL
+
+  ingress {                                                                                             # to open incoming port 80
+    description = "Allow port HTTP"
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = [ "0.0.0.0/0" ]
+  }
+
+  ingress {                                                                                             # to open incoming port 433
+    description = "Allow port HTTPS"
+    from_port = 443
+    to_port = 443
+    protocol = "tcp"
+    cidr_blocks = [ "0.0.0.0/0" ]
+  }
+
+  egress = {                                                                                            # to open outgoing ports
+    description = "Allaw ALL Ports"
+    from_port = 0                                                                                       # means ALL ports
+    to_port = 0                                                                                         # means ALL ports
+    protocol = "-1"
+    cidr_blocks = [ "0.0.0.0/0" ]
+  }
+
+  tags = {
+    Name = "WebServer SG by Terraform"
+    Owner = "Karaborg"
+  }
+}
+```
+
+After that, you can enter `terraform init`, `terraform plan` and then `terraform apply`. Therefore, Terraform will create the security group and the web server.
 
 ## Working with GCP
 
