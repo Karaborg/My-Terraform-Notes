@@ -192,7 +192,6 @@ To destroy any resources, you can open the `.tf` file and delete the resource yo
 ## Provisioning of Web Server
 
 ### Bootstrap simple WebServer on AWS
-Let's us create a simple Web Server:
 ```
 # Build WebServer during Bootstrap
 provider "aws" {
@@ -213,6 +212,7 @@ echo "<h2>WebServer with PrivateIP: $MYIP</h2><br>Build by Terraform" > /var/www
 service httpd start
 chkconfig httpd on
 EOF
+
   tags = {
     Name = "WebServer Build by Terraform"
     Owner = "Karaborg"
@@ -255,6 +255,82 @@ resource "aws_security_group" "web" {
 ```
 
 After that, you can enter `terraform init`, `terraform plan` and then `terraform apply`. Therefore, Terraform will create the security group and the web server.
+
+### Bootstrap simple WebServer with External Static file for user_data
+**Without external file:**
+```
+resource "aws_instance" "web" {                                                                         # our aws instance
+  ami = "ami-0c9bfc21ac5bf10eb"                                                                         # Amazon Linux 2
+  instance_type = "t3.micro"
+  vpc_security_group_ids = [ aws_security_group.web.id ]                                                # to make our instance to use our security group
+  user_data = <<EOF
+#!/bin/bash
+yum -y update
+yum -y install httpd
+MYIP=`curl http://169.254.169.254/latest/meta-data/local-ipv4`
+echo "<h2>WebServer with PrivateIP: $MYIP</h2><br>Build by Terraform" > /var/wwww/html/index.html
+service httpd start
+chkconfig httpd on
+EOF
+
+  tags = {
+    Name = "WebServer Build by Terraform"
+    Owner = "Karaborg"
+  }
+}
+```
+
+**With external static file:**
+```
+resource "aws_instance" "web" {
+  ami = "ami-0c9bfc21ac5bf10eb" # Amazon Linux 2
+  instance_type = "t3.micro"
+  vpc_security_group_ids = [ aws_security_group.web.id ]
+  user_data = file("user_data.sh")                           # we saved the sh somewhere and gave it's path
+
+  tags = {
+    Name = "WebServer Build by Terraform"
+    Owner = "Karaborg"
+  }
+}
+```
+
+### Bootstrap simple WebServer with External Template/Dynamic file for user_data
+
+**With external static file:**
+```
+resource "aws_instance" "web" {
+  ami = "ami-0c9bfc21ac5bf10eb" # Amazon Linux 2
+  instance_type = "t3.micro"
+  vpc_security_group_ids = [ aws_security_group.web.id ]
+  user_data = file("user_data.sh")
+
+  tags = {
+    Name = "WebServer Build by Terraform"
+    Owner = "Karaborg"
+  }
+}
+```
+
+**With external template/dynamic file:**
+```
+resource "aws_instance" "web" {
+  ami = "ami-0c9bfc21ac5bf10eb" # Amazon Linux 2
+  instance_type = "t3.micro"
+  #user_data = "yum install httpd -y"
+  vpc_security_group_ids = [ aws_security_group.web.id ]
+  user_data = templatefile("user_data.sh", {                 # to send data
+    f_name = "Kara"
+    l_name = "Borg"
+    names = [ "One", "Two", "Three", "Four", "Five" ]
+  })
+
+  tags = {
+    Name = "WebServer Build by Terraform"
+    Owner = "Karaborg"
+  }
+}
+```
 
 ## Working with GCP
 
